@@ -1,0 +1,78 @@
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 4rem;
+    box-shadow: 0 1px 3px -2px black;
+}
+
+nav .logo{
+    display: flex;
+    align-items: center;
+}
+
+nav .logo p{
+    margin-left: 1rem;
+    font-weight: 600;
+    color: #171717;
+}
+
+nav ul li{
+    list-style: none;
+    font-size: 1.2rem;
+}
+
+nav ul li a{
+    color: #626262;
+}
+
+nav ul{
+    display: flex;
+    gap: 1.5rem;
+}
+
+nav .right{
+    display: flex;
+    align-items: center;
+}
+
+nav .right .icon{
+    font-size: 2rem;
+    margin-left: 1rem;
+}
+
+nav .right button{
+    padding: 0.75rem 1.5rem;
+    border-radius: 1.5rem;
+    background: transparent;
+    outline: none;
+    cursor: pointer;
+}
+
+nav ul li a.active{
+    position: relative;
+}
+
+nav ul li a.active::after{
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    background-color: #ff4141 ;
+}
+
+.nav-cart-count{
+    width: 22px;
+    height: 22px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -28px;
+    margin-left: -13px;
+    border-radius: 11px;
+    font-size: 14px;
+    background-color: red;
+    color: white;
+}
