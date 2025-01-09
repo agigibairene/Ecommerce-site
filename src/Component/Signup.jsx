@@ -1,7 +1,9 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Input from "../utils/Input";
 import { useState } from "react";
 import checkValidData from "../utils/validate";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../utils/firebase";
 
 export default function SignUp(){
 
@@ -12,15 +14,16 @@ export default function SignUp(){
         checked: false
     })
     const [errors, setErrors] = useState({});
+    const navigate = useNavigate();
 
 
     function handleUserInput(event){
 
-        const {name, value, type } = event.target
+        const {name, value, type, checked } = event.target
         setUserInput(prevData =>{
             return {
                 ...prevData,
-                [name]: type === 'checked' ? !prevData.checked : value
+                [name]: type === 'checked' ? checked : value
             }
         })
     }
@@ -36,9 +39,25 @@ export default function SignUp(){
 
     }
 
-    function handleFormSubmit(event){
+    async function handleFormSubmit(event){
         event.preventDefault();
-        validateInput()
+        if (validateInput()){
+            try{
+                const userCrendentials = await createUserWithEmailAndPassword(auth, userInput.email, userInput.password);
+                console.log(userCrendentials.user);
+                navigate("/home");
+            }
+            catch(error){
+                const errorMessage = error.code
+                setErrors({
+                    general: errorMessage === "auth/email-already-in-use"
+                    ? "Email is already in use."
+                    : errorMessage === "auth/wrong-password"
+                    ? "Invalid password."
+                    : "An unexpected error occurred."
+                })
+            }
+        }
     }
 
     return(
@@ -54,7 +73,9 @@ export default function SignUp(){
             <Input name="password" type="password" placeholder="Password" onChange={handleUserInput} value={userInput.password}/>
             {errors.password && <p className="text-red-500">{errors.password}</p>}
 
-            <button className="bg-red-500 w-full py-3 text-white my-4 rounded-sm">Continue</button>
+            <button className="bg-red-500 w-full py-3 text-white my-4 rounded-sm outline-none">Continue</button>
+            {errors.general && <p className="text-red-500">{errors.general}</p>}
+
             <p className="">Already have an account? <Link to="/login" className="text-red-500 font-medium">Click here</Link></p>
             <div className="flex items-center space-x-2 mt-2">
                 <input 

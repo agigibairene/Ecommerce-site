@@ -40,7 +40,7 @@ export default function Header(){
             </ul>
 
             <div className="right">
-                <button onClick={toggleLoginBtn}>{toggleBtn ? "Log Out" : "Login"}</button>
+                <button className="border-2" onClick={toggleLoginBtn}>{toggleBtn ? "Log Out" : "Login"}</button>
                 <IoMdCart className="icon"/>
                 <div className="nav-cart-count">0</div>
             </div>

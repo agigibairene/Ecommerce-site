@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import Input from "../utils/Input";
 import { useState } from "react";
 import checkValidData from "../utils/validate";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { auth } from "../utils/firebase";
+
 
 export default function Login(){
     
@@ -12,6 +16,7 @@ export default function Login(){
         });
 
         const [errors, setErrors] = useState({});
+        const navigate = useNavigate();
 
         function handleUserInput(event){
             const {name, value, type, checked} = event.target
@@ -34,13 +39,29 @@ export default function Login(){
             return Object.values(formErrors).every((error) => error === "");
         }
 
-        function handleSubmit(event){
+        async function handleSubmit(event){
             event.preventDefault();
             const isValid = validateInput();
 
-            if (!isValid) return;
+            if (isValid){
+                try{
+                    const userCrendentials = await signInWithEmailAndPassword(auth, userInput.email, userInput.password);
+                console.log(userCrendentials.user);
+                navigate("/home");
+                }
+                catch (err) {
+                    console.log(err);
+                    const message = err.message
+                    setErrors({
+                        general:  message === "auth/wrong-password"
+                        ? "Invalid password."
+                        : "An unexpected error occurred."
+                    })
+                }
+            }
+            return;
 
-            console.log("Submitted successfully")
+            
 
         }
 
