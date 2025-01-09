@@ -5,8 +5,7 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      'react-router-dom': 'react-router-dom' // Use the package name directly
+      'react-router-dom': 'react-router-dom' 
     }
   }
 });
-
